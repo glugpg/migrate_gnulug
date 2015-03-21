@@ -99,6 +99,8 @@ class ExPageMigration extends DrupalNode6Migration {
       $this->addFieldMapping('nid', 'nid');
       $this->addFieldMapping('is_new')
           ->defaultValue(TRUE);
+      $this->addFieldMapping('language')
+           ->defaultValue('it');
       $this->addFieldMapping('body:format')
           ->defaultValue('full_html');
       $this->addFieldMapping('field_allegati', 'upload')
@@ -218,7 +220,7 @@ class ExSlidesMigration extends DrupalNode6Migration {
 
       // Note that we map migrated terms by the vocabulary ID.
       $this->addFieldMapping('field_categoria_slide', '4')
-           ->sourceMigration('ExPhotoTerm');
+           ->sourceMigration('ExSlideTerm                         ');
       $this->addFieldMapping('field_categoria_slide:source_type')
            ->defaultValue('tid');
 

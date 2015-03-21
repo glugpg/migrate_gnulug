@@ -48,11 +48,6 @@ function migrate_gnulug_register_migrations() {
 
   );
 
-  $node_arguments = array(
-    'user_migration' => 'ExUser',
-    'default_uid' => 1,
-  );
-
   /*
   * import dei ruoli
   */
@@ -130,10 +125,16 @@ function migrate_gnulug_register_migrations() {
   );
   Migration::registerMigration('ExSlideTermMigration', $slide_term_arguments['machine_name'], $slide_term_arguments);
 
+  $node_arguments = $common_arguments + array(
+    'user_migration' => 'ExUser',
+    'default_uid' => 1,
+    'default_language' => 'it',
+  );
+
   /*
    * import degli eventi
    */
-  $arguments = $common_arguments + $node_arguments + array(
+  $arguments = $node_arguments + array(
     'description' => t('Migration of Eventi nodes from Drupal 6'),
     'machine_name' => 'ExEventi',
     'source_type' => 'event',
@@ -144,7 +145,7 @@ function migrate_gnulug_register_migrations() {
   /*
    * import delle Notizie
    */
-  $arguments = $common_arguments + $node_arguments + array(
+  $arguments = $node_arguments + array(
     'description' => t('Migration of Notizia nodes from Drupal 6'),
     'machine_name' => 'ExNews',
     'source_type' => 'story',
@@ -155,7 +156,7 @@ function migrate_gnulug_register_migrations() {
   /*
    * import degli articoli
    */
-  $arguments = $common_arguments + $node_arguments + array(
+  $arguments = $node_arguments + array(
     'description' => t('Migration of Articolo nodes from Drupal 6'),
     'machine_name' => 'ExArticolo',
     'source_type' => 'articolo',
@@ -166,18 +167,20 @@ function migrate_gnulug_register_migrations() {
   /*
    * import delle pagine
    */
-  $arguments = $common_arguments + $node_arguments + array(
+  $arguments = $node_arguments + array(
     'description' => t('Migration of Pagine nodes from Drupal 6'),
     'machine_name' => 'ExPage',
     'source_type' => 'page',
     'destination_type' => 'page',
+    'user_migration' => 'ExUser',
+    'default_uid' => 1,
   );
   Migration::registerMigration('ExPageMigration', $arguments['machine_name'], $arguments);
 
   /*
    * import delle immagini per gallerie
    */
-  $arguments = $common_arguments + $node_arguments + array(
+  $arguments = $node_arguments + array(
     'description' => t('Migration of Immagini Gallerie nodes from Drupal 6'),
     'machine_name' => 'ExImage',
     'source_type' => 'image',
@@ -189,7 +192,7 @@ function migrate_gnulug_register_migrations() {
   /*
    * import delle slides
    */
-  $arguments = $common_arguments + $node_arguments + array(
+  $arguments = $node_arguments + array(
     'description' => t('Migration of Slides nodes from Drupal 6'),
     'machine_name' => 'ExSlides',
     'source_type' => 'slides',
