@@ -186,6 +186,18 @@ function migrate_gnulug_register_migrations() {
   );
   Migration::registerMigration('ExImageMigration', $arguments['machine_name'], $arguments);
 
+  /*
+   * import delle slides
+   */
+  $arguments = $common_arguments + $node_arguments + array(
+    'description' => t('Migration of Slides nodes from Drupal 6'),
+    'machine_name' => 'ExSlides',
+    'source_type' => 'slides',
+    'destination_type' => 'slide',
+    'dependencies' => array('ExSlideTerm'),
+  );
+  Migration::registerMigration('ExSlidesMigration', $arguments['machine_name'], $arguments);
+
     /*
    * import dei commenti
    */

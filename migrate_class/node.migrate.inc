@@ -162,33 +162,90 @@ class ExImageMigration extends DrupalNode6Migration {
    *
    * @param $row
    */
-  public function prepareRow($row) {
-    if (parent::prepareRow($row) === FALSE) {
-      return FALSE;
-    }
+  //public function prepareRow($row) {
+    //if (parent::prepareRow($row) === FALSE) {
+      //return FALSE;
+    //}
 
-    $image_row = Database::getConnection('default', $this->sourceConnection)
-                 ->select('image', 'i')
-                 ->fields('i', array('fid'))
-                 ->condition('nid', $row->nid)
-                 ->execute()
-                 ->fetchObject();
-    if ($image_row) {
-      $row->fid = $image_row->fid;
-      //$row->filename = $image_row->filename;
-    }
-    else {
-      $this->saveMessage(t('No custom_image_table data for image node with vid !vid',
-                         array('!vid' => $row->vid)));
-    }
+    //$image_row = Database::getConnection('default', $this->sourceConnection)
+                 //->select('image', 'i')
+                 //->fields('i', array('fid'))
+                 //->condition('nid', $row->nid)
+                 //->execute()
+                 //->fetchObject();
+    //if ($image_row) {
+      //$row->fid = $image_row->fid;
+      ////$row->filename = $image_row->filename;
+    //}
+    //else {
+      //$this->saveMessage(t('No custom_image_table data for image node with vid !vid',
+                         //array('!vid' => $row->vid)));
+    //}
+  //}
+
+  protected function query() {
+    // Get the default query
+    $query = parent::query();
+    // Add fields from a custom table
+    $query->innerJoin('image', 'i', 'n.nid=i.nid');
+    $query->fields('i', array('fid',));
+    return $query;
+  }
+}
+
+class ExSlidesMigration extends DrupalNode6Migration {
+  public function __construct(array $arguments) {
+      parent::__construct($arguments);
+        //$this->dependencies[] = 'ExCategories';
+
+      $this->addFieldMapping('nid', 'nid');
+      $this->addFieldMapping('is_new')
+          ->defaultValue(TRUE);
+      $this->addFieldMapping('body:format')
+          ->defaultValue('full_html');
+      $this->addFieldMapping('field_allegati', 'upload')
+          ->sourceMigration('File');
+      $this->addFieldMapping('field_allegati:file_class')
+          ->defaultValue('MigrateFileFid');
+      $this->addFieldMapping('field_allegati:preserve_files')
+          ->defaultValue(TRUE);
+      $this->addFieldMapping('field_allegati:description', 'upload:description')
+          ->defaultValue('');
+      $this->addFieldMapping('field_allegati:display', 'upload:list')
+          ->defaultValue('');
+      $this->addFieldMapping('field_allegati:language')
+          ->defaultValue(LANGUAGE_NONE);
+
+      // Note that we map migrated terms by the vocabulary ID.
+      $this->addFieldMapping('field_categoria_slide', '4')
+           ->sourceMigration('ExPhotoTerm');
+      $this->addFieldMapping('field_categoria_slide:source_type')
+           ->defaultValue('tid');
+
+      $this->addFieldMapping('field_autore', 'field_autore')
+          ->defaultValue('');
+      $this->addFieldMapping('field_autore:language')
+          ->defaultValue(LANGUAGE_NONE);
+
+      $this->addFieldMapping('field_video_vimeo', 'field_videovimeo_value')
+          ->defaultValue('');
+      $this->addFieldMapping('field_video_vimeo:language')
+          ->defaultValue(LANGUAGE_NONE);
+
   }
 
-//  protected function query() {
-//    // Get the default query
-//    $query = parent::query();
-//    // Add fields from a custom table
-//    $query->innerJoin('image', 'i', 'n.nid=i.nid');
-//    $query->fields('i', array('fid',));
-//    return $query;
-//  }
+  protected function query() {
+    // Get the default query
+    $query = parent::query();
+    // Add fields from a custom table
+    $query->leftJoin('content_field_videovimeo', 'vm', 'f.field_rel_videovimeo_nid=vm.nid');
+    $query->fields('vm', array('field_videovimeo_value',));
+    return $query;
+  }
+
+  public function prepareRow($row) {
+    if($row->field_videovimeo_value != '') {
+      $row->field_videovimeo_value = 'https://vimeo.com/'. $row->field_videovimeo_value;
+    }
+  }
 }
