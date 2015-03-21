@@ -1,0 +1,14 @@
+name = "Migrate Perugia GNU/LUG"
+description = "Import content from PG GNU LUG on Drupal 6"
+package = "Migration"
+core = 7.x
+version = 7.x-0.1
+
+dependencies[] = migrate
+dependencies[] = migrate_d2d
+
+;files[] = d6_migration.migrate.inc
+;files[] = commons/BuNodeBase.class.inc
+;files[] = migrations/BuUser.class.inc
+;files[] = migrations/BuUserCv.class.inc
+;files[] = migrations/BuUserpoint.class.inc

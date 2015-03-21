@@ -1,0 +1,24 @@
+<?php
+/**
+ * @file
+ *   migrate_gnulug.module
+ *
+ * @author Maurizio Cavalletti <maurizio at akabit.it>
+ * @link http://www.akabit.it
+ *
+ * @date 16-mar-2015
+ */
+
+/**
+ * Implements hook_flush_caches().
+ */
+function migrate_gnulug_flush_caches() {
+    migrate_gnulug_register_migrations();
+}
+
+include_once 'migrate_gnulug.migrate.inc';
+include_once 'migrate_class/users.migrate.inc';
+//include_once 'migrate_class/files.migrate.inc';
+include_once 'migrate_class/taxonomy.migrate.inc';
+include_once 'migrate_class/node.migrate.inc';
+//include_once 'migrate_class/comment.migrate.inc';
