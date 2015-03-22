@@ -308,3 +308,43 @@ class ExQuoteMigration extends DrupalNode6Migration {
           ->defaultValue('');
   }
 }
+
+class ExVerbaliMigration extends DrupalNode6Migration {
+  public function __construct(array $arguments) {
+      parent::__construct($arguments);
+        //$this->dependencies[] = 'ExCategories';
+
+      $this->addFieldMapping('nid', 'nid');
+      $this->addFieldMapping('is_new')
+          ->defaultValue(TRUE);
+      $this->addFieldMapping('language')
+           ->defaultValue('it');
+
+      $this->addFieldMapping('field_verbale', 'upload')
+          ->sourceMigration('File');
+      $this->addFieldMapping('field_verbale:file_class')
+          ->defaultValue('MigrateFileFid');
+      $this->addFieldMapping('field_verbale:preserve_files')
+          ->defaultValue(TRUE);
+      $this->addFieldMapping('field_verbale:description', 'upload:description')
+          ->defaultValue('');
+      $this->addFieldMapping('field_verbale:display', 'upload:list')
+          ->defaultValue('');
+      $this->addFieldMapping('field_verbale:language')
+          ->defaultValue(LANGUAGE_NONE);
+
+      $this->addFieldMapping('field_data_verbale', 'field_data_verbale')
+          ->defaultValue('');
+      $this->addFieldMapping('field_data_verbale:timezone')
+          ->defaultValue('Europe/Berlin');
+  }
+
+  //public function complete($entity, stdClass $row) {
+    //db_update('file_managed')
+      //->condition('fid', $row->fids, 'IN')
+      //->expression('uri', 'REPLACE(uri, "private:", "public:")')
+      //->execute();
+    //$this->saveMessage(t('file with vid !vid',
+                         //array('!vid' => $row->fids)));
+  //}
+}

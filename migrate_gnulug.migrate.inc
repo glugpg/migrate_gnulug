@@ -87,7 +87,7 @@ function migrate_gnulug_register_migrations() {
     'machine_name' => 'Picture',
     'description' => t('Import image Drupal 6'),
     'default_uid' => 1,
-    'source_dir' => '/var/www/drupal-6/sites/www.perugiagnulug.org/files/pictures',
+    'source_dir' => '/home/drupal-6/files/pictures',
     'destination_dir' => 'public://',
   );
   Migration::registerMigration('DrupalPicture6Migration', $picture_arguments['machine_name'], $picture_arguments);
@@ -98,7 +98,7 @@ function migrate_gnulug_register_migrations() {
   $file_arguments = $common_arguments + array(
     'machine_name' => 'File',
     'description' => t('Import Drupal 6 files'),
-    'source_dir' => '/var/www/drupal-6/sites/www.perugiagnulug.org/files',
+    'source_dir' => '/home/drupal-6/files',
     'destination_dir' => 'public://',
   );
   Migration::registerMigration('DrupalFile6Migration', $file_arguments['machine_name'], $file_arguments);
@@ -209,6 +209,17 @@ function migrate_gnulug_register_migrations() {
     'destination_type' => 'quota_annuale',
   );
   Migration::registerMigration('ExQuoteMigration', $arguments['machine_name'], $arguments);
+
+  /*
+   * import dei verbali
+   */
+  $arguments = $node_arguments + array(
+    'description' => t('Migration of Verbali nodes from Drupal 6'),
+    'machine_name' => 'ExVerbali',
+    'source_type' => 'verbale',
+    'destination_type' => 'verbale',
+  );
+  Migration::registerMigration('ExVerbaliMigration', $arguments['machine_name'], $arguments);
 
     /*
    * import dei commenti
