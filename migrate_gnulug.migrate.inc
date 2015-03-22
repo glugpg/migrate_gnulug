@@ -172,8 +172,6 @@ function migrate_gnulug_register_migrations() {
     'machine_name' => 'ExPage',
     'source_type' => 'page',
     'destination_type' => 'page',
-    'user_migration' => 'ExUser',
-    'default_uid' => 1,
   );
   Migration::registerMigration('ExPageMigration', $arguments['machine_name'], $arguments);
 
@@ -200,6 +198,17 @@ function migrate_gnulug_register_migrations() {
     'dependencies' => array('ExSlideTerm'),
   );
   Migration::registerMigration('ExSlidesMigration', $arguments['machine_name'], $arguments);
+
+  /*
+   * import delle quote
+   */
+  $arguments = $node_arguments + array(
+    'description' => t('Migration of Quote nodes from Drupal 6'),
+    'machine_name' => 'ExQuote',
+    'source_type' => 'quota_annuale',
+    'destination_type' => 'quota_annuale',
+  );
+  Migration::registerMigration('ExQuoteMigration', $arguments['machine_name'], $arguments);
 
     /*
    * import dei commenti

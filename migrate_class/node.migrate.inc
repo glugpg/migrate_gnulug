@@ -142,11 +142,6 @@ class ExImageMigration extends DrupalNode6Migration {
            ->sourceMigration('File');
       $this->addFieldMapping('field_image:file_class')
            ->defaultValue('MigrateFileFid');
-
-      //$this->addFieldMapping('field_image', 'fid')
-          //->sourceMigration('File');
-      //$this->addFieldMapping('field_image:file_class', 'fid')
-          //->defaultValue('MigrateFileFid');
       $this->addFieldMapping('field_image:preserve_files')
           ->defaultValue(TRUE);
       //$this->addFieldMapping('field_image:description', 'upload:description')
@@ -189,8 +184,8 @@ class ExImageMigration extends DrupalNode6Migration {
     // Get the default query
     $query = parent::query();
     // Add fields from a custom table
-    $query->innerJoin('image', 'i', 'n.nid=i.nid');
-    $query->fields('i', array('fid',));
+    $query->leftJoin('image', 'im', 'n.nid=im.nid');
+    $query->fields('im', array('fid'));
     return $query;
   }
 }
@@ -269,5 +264,47 @@ class ExSlidesMigration extends DrupalNode6Migration {
       //$this->saveMessage(t('No field_videovimeo_value data for node with vid !vid',
                          //array('!vid' => $row->vid)));
     //}
+  }
+}
+
+class ExQuoteMigration extends DrupalNode6Migration {
+  public function __construct(array $arguments) {
+      parent::__construct($arguments);
+        //$this->dependencies[] = 'ExCategories';
+
+      $this->addFieldMapping('nid', 'nid');
+      $this->addFieldMapping('is_new')
+          ->defaultValue(TRUE);
+      $this->addFieldMapping('language')
+           ->defaultValue('it');
+      $this->addFieldMapping('body:format')
+          ->defaultValue('full_html');
+      $this->addFieldMapping('field_allegati', 'upload')
+          ->sourceMigration('File');
+      $this->addFieldMapping('field_allegati:file_class')
+          ->defaultValue('MigrateFileFid');
+      $this->addFieldMapping('field_allegati:preserve_files')
+          ->defaultValue(TRUE);
+      $this->addFieldMapping('field_allegati:description', 'upload:description')
+          ->defaultValue('');
+      $this->addFieldMapping('field_allegati:display', 'upload:list')
+          ->defaultValue('');
+      $this->addFieldMapping('field_allegati:language')
+          ->defaultValue(LANGUAGE_NONE);
+      // campi quota
+      $this->addFieldMapping('field_importo_quota', 'field_quota_value')
+          ->defaultValue(0);
+      $this->addFieldMapping('field_data_pagamento', 'field_data_verbale')
+          ->defaultValue('');
+      $this->addFieldMapping('field_data_pagamento:timezone')
+          ->defaultValue('Europe/Berlin');
+      $this->addFieldMapping('field_socio_pagante', 'field_usersocio')
+          ->defaultValue(0);
+      $this->addFieldMapping('field_anno_rif_quota', 'field_quota_anno_rif')
+          ->defaultValue('');
+      $this->addFieldMapping('field_anno_rif_quota:timezone')
+          ->defaultValue('Europe/Berlin');
+      $this->addFieldMapping('field_modalita_pagamento', 'field_mod_pagamento')
+          ->defaultValue('');
   }
 }
