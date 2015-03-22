@@ -203,6 +203,8 @@ class ExSlidesMigration extends DrupalNode6Migration {
       $this->addFieldMapping('nid', 'nid');
       $this->addFieldMapping('is_new')
           ->defaultValue(TRUE);
+      $this->addFieldMapping('language')
+           ->defaultValue('it');
       $this->addFieldMapping('body:format')
           ->defaultValue('full_html');
       $this->addFieldMapping('field_allegati', 'upload')
@@ -246,8 +248,26 @@ class ExSlidesMigration extends DrupalNode6Migration {
   }
 
   public function prepareRow($row) {
-    if($row->field_videovimeo_value != '') {
+    if (parent::prepareRow($row) === FALSE) {
+      return FALSE;
+    }
+
+    if ($row->field_videovimeo_value) {
       $row->field_videovimeo_value = 'https://vimeo.com/'. $row->field_videovimeo_value;
     }
+
+    //$vimeo_row = Database::getConnection('default', $this->sourceConnection)
+                 //->select('content_field_videovimeo', 'vm')
+                 //->fields('vm', array('field_videovimeo_value'))
+                 //->condition('nid', $row->nid)
+                 //->execute()
+                 //->fetchObject();
+    //if ($vimeo_row) {
+      //$row->field_rel_videovimeo = 'https://vimeo.com/'. $vimeo_row->field_videovimeo_value;
+    //}
+    //else {
+      //$this->saveMessage(t('No field_videovimeo_value data for node with vid !vid',
+                         //array('!vid' => $row->vid)));
+    //}
   }
 }
