@@ -186,6 +186,7 @@ class ExImageMigration extends DrupalNode6Migration {
     // Add fields from a custom table
     $query->leftJoin('image', 'im', 'n.nid=im.nid');
     $query->fields('im', array('fid'));
+    $query->condition('image_size', '_original');
     return $query;
   }
 }
